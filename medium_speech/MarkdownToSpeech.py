@@ -33,6 +33,7 @@ class MarkdownToSpeech(LoggingClass):
         filename=None,
         docker_container="mmphego/mediumexporter",
         tmp_dir="/tmp",
+        log_level="INFO",
     ):
 
         self.medium_url = medium_url
@@ -48,13 +49,17 @@ class MarkdownToSpeech(LoggingClass):
             save_to_file (bool, optional): Description
         """
         if not self.which("docker"):
-            msg = ("Ensure that Docker is installed in your system\n"
-                    "Run 'sudo apt install docker-ce'")
+            msg = (
+                "Ensure that Docker is installed in your system\n"
+                "Run 'sudo apt install docker-ce'"
+            )
             raise RuntimeError(msg)
 
         if self.medium_url:
             try:
-                self.logger.debug("Running docker container '%s'", self.docker_container)
+                self.logger.debug(
+                    "Running docker container '%s'", self.docker_container
+                )
                 client = docker.from_env()
                 data = client.containers.run(
                     self.docker_container, self.medium_url, remove=runonce
@@ -206,8 +211,10 @@ class MarkdownToSpeech(LoggingClass):
         FNULL = open(subprocess.os.devnull, "wb")
         play_with = self.which(play_with)
         if not play_with:
-            msg = ("Ensure that mpg123 is installed in your system\n"
-                    "Run 'sudo apt install mpg123'")
+            msg = (
+                "Ensure that mpg123 is installed in your system\n"
+                "Run 'sudo apt install mpg123'"
+            )
             raise RuntimeError(msg)
         tmp_dir = Path(self.tmp_dir)
         mp3_files = tmp_dir.glob(f"*.mp3")

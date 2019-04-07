@@ -1,3 +1,4 @@
+argcomplete
 coloredlogs
 docker[tls]
 gTTS

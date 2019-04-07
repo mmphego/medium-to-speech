@@ -18,7 +18,7 @@ with open(os.path.join(here, "pip-requirements.txt"), encoding="utf-8") as _f:
     pip_req = [pkg.strip() for pkg in _f.readlines()]
 
 scripts = []
-for dirname, dirnames, filenames in os.walk('scripts'):
+for dirname, dirnames, filenames in os.walk("scripts"):
     for filename in filenames:
         scripts.append(os.path.join(dirname, filename))
 
@@ -105,8 +105,7 @@ setup(
     author_email=AUTHOR_EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(
-        exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
