@@ -22,7 +22,6 @@ class LoggingClass:
         log_format = "%(asctime)s - %(name)s - %(levelname)s - %(module)s - %(pathname)s : %(lineno)d - %(message)s"
         name = ".".join([os.path.basename(sys.argv[0]), self.__class__.__name__])
         logging.basicConfig(format=log_format)
-        coloredlogs.install(fmt=log_format)
         return logging.getLogger(name)
 
 
@@ -40,6 +39,8 @@ class MarkdownToSpeech(LoggingClass):
         self.filename = filename
         self.docker_container = docker_container
         self.tmp_dir = tmp_dir
+        self.logger.setLevel(log_level)
+        coloredlogs.install(level=log_level)
 
     def read_from_medium(self, runonce=True, save_to_file=False):
         """
