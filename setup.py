@@ -5,7 +5,7 @@ import os
 import sys
 from shutil import rmtree
 
-from setuptools import find_packages, setup, Command
+from setuptools import Command, find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,6 +16,11 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 # Get the pip requirements from the pip-requirements file
 with open(os.path.join(here, "pip-requirements.txt"), encoding="utf-8") as _f:
     pip_req = [pkg.strip() for pkg in _f.readlines()]
+
+scripts = []
+for dirname, dirnames, filenames in os.walk("scripts"):
+    for filename in filenames:
+        scripts.append(os.path.join(dirname, filename))
 
 # Package meta-data.
 AUTHOR = "Mpho Mphego"
@@ -36,6 +41,7 @@ LONG_DESCRIPTION = long_description
 NAME = "medium-speech"
 REQUIRED = pip_req
 REQUIRES_PYTHON = ">=3.6.0"
+SCRIPTS = scripts
 SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
 URL = f"https://github.com/{GHUSERNAME}/medium-to-speech"
 VERSION = None
@@ -106,6 +112,7 @@ setup(
     license=LICENSE,
     classifiers=CLASSIFIERS,
     keywords=KEYWORDS,
+    scripts=SCRIPTS,
     project_urls={
         "Bug Reports": SOURCE + "/issues",
         "Source": SOURCE,
