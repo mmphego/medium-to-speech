@@ -212,13 +212,3 @@ class MarkdownToSpeech(LoggingClass):
                     stderr=subprocess.STDOUT,
                 )
         self.clean_up_files()
-
-
-def main():
-    medium_url = "https://medium.com/one-minute-reads/metal-thoughts-ccd3535e7f32"
-    A = MarkdownToSpeech(medium_url=medium_url)
-    A.text_to_speech()
-    A.play_it()
-
-if __name__ == "__main__":
-    main()
