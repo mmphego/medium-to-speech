@@ -39,8 +39,8 @@ class MarkdownToSpeech(LoggingClass):
         self.filename = filename
         self.docker_container = docker_container
         self.tmp_dir = tmp_dir
-        self.logger.setLevel(log_level)
-        coloredlogs.install(level=log_level)
+        self.logger.setLevel(log_level.upper())
+        coloredlogs.install(level=log_level.upper())
 
     def read_from_medium(self, runonce=True, save_to_file=False):
         """
