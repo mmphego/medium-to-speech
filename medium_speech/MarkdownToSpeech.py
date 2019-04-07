@@ -47,6 +47,11 @@ class MarkdownToSpeech(LoggingClass):
             runonce (bool, optional): Description
             save_to_file (bool, optional): Description
         """
+        if not self.which("docker"):
+            msg = ("Ensure that Docker is installed in your system\n"
+                    "Run 'sudo apt install docker-ce'")
+            raise RuntimeError(msg)
+
         if self.medium_url:
             try:
                 self.logger.debug("Running docker container '%s'", self.docker_container)
@@ -92,7 +97,8 @@ class MarkdownToSpeech(LoggingClass):
         Returns:
             String: path to program
         """
-        return subprocess.check_output(["which", program]).strip().decode()
+        with suppress(Exception):
+            return subprocess.check_output(["which", program]).strip().decode()
 
     def unmark_element(self, element, stream=None):
         """patching Markdown"""
@@ -192,13 +198,17 @@ class MarkdownToSpeech(LoggingClass):
         self.logger.info("Done: Generating speech from text using Google TTS API")
 
     def play_it(self, play_with="mpg123"):
-        """Play mp3 files
+        """Play generated TTS as mp3 files
 
         Args:
             play_with (str, "mph123"): Unix/Linux program to play mp3 with!
         """
         FNULL = open(subprocess.os.devnull, "wb")
         play_with = self.which(play_with)
+        if not play_with:
+            msg = ("Ensure that mpg123 is installed in your system\n"
+                    "Run 'sudo apt install mpg123'")
+            raise RuntimeError(msg)
         tmp_dir = Path(self.tmp_dir)
         mp3_files = tmp_dir.glob(f"*.mp3")
         self.logger.info("Playing generated TTS data with %s", play_with)
