@@ -58,9 +58,7 @@ class MarkdownToSpeech(LoggingClass):
 
         if self.medium_url:
             try:
-                self.logger.debug(
-                    "Running docker container '%s'", self.docker_container
-                )
+                self.logger.debug("Running docker container '%s'", self.docker_container)
                 client = docker.from_env()
                 data = client.containers.run(
                     self.docker_container, self.medium_url, remove=runonce
@@ -153,9 +151,7 @@ class MarkdownToSpeech(LoggingClass):
     I    """
         if isinstance(words, list):
             words = [self.remove_tags(i) for i in words]
-            return [
-                words[n : n + char_length] for n in range(0, len(words), char_length)
-            ]
+            return [words[n : n + char_length] for n in range(0, len(words), char_length)]
 
     def markdown_to_text(self, tab_length=4):
         """
