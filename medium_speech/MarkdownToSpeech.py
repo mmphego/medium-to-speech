@@ -195,8 +195,9 @@ class MarkdownToSpeech(LoggingClass):
             for count, line in enumerate(words, 1):
                 if line:
                     self.logger.debug(line)
-                    tts = gTTS(text=line, lang="en-us")
-                    tts.save(f"{self.tmp_dir}/{count}.mp3")
+                    with suppress(Exception):
+                        tts = gTTS(text=line, lang="en-us")
+                        tts.save(f"{self.tmp_dir}/file_{str(count).zfill(2)}.mp3")
         self.logger.info("Done: Generating speech from text using Google TTS API")
 
     def play_it(self, play_with="mpg123"):

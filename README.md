@@ -4,3 +4,6 @@
 ![GitHub](https://img.shields.io/github/license/mmphego/medium-to-speech.svg)
 
 Medium posts as Markdown to Speech.
+
+
+## Usage

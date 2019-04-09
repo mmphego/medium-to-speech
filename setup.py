@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import atexit
 import os
 import sys
 from shutil import rmtree
 
 from setuptools import Command, find_packages, setup
+from setuptools.command.install import install
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -56,6 +58,16 @@ if not VERSION:
         exec(f.read(), about)
 else:
     about["__version__"] = VERSION
+
+
+def _post_install():
+    os.system("scripts/register-medium-script-argcomplete.sh")
+
+
+class PostInstallCommand(install):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        atexit.register(_post_install)
 
 
 class UploadCommand(Command):
@@ -118,5 +130,8 @@ setup(
         "Source": SOURCE,
         "Say Thanks!": f"https://saythanks.io/to/{GHUSERNAME}",
     },
-    cmdclass={"upload": UploadCommand},
+    cmdclass={
+        "upload": UploadCommand,
+        'install': PostInstallCommand
+    },
 )
