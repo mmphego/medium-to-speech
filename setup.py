@@ -42,7 +42,7 @@ LICENSE = "MIT"
 LONG_DESCRIPTION = long_description
 NAME = "medium-speech"
 REQUIRED = pip_req
-REQUIRES_PYTHON = ">=3.6.0"
+REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
 SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
 URL = f"https://github.com/{GHUSERNAME}/medium-to-speech"
