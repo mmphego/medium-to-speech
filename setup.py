@@ -60,8 +60,21 @@ else:
     about["__version__"] = VERSION
 
 
+def _printer(msg, hashx=28):
+    print ("\n")
+    print ("#"*80)
+    print ("#"*hashx, msg, "#"*hashx)
+    print ("#"*80)
+    print ( "\n")
+
 def _post_install():
-    os.system("scripts/register-medium-script-argcomplete.sh")
+    cmd = "".join(SCRIPTS).split('/')[-1]
+    _printer("Installation Complete!")
+    print (f"If you would like tab-completion on {cmd}")
+    print ("Run the following commands in your terminal:\n")
+    print ("\t activate-global-python-argcomplete --user")
+    print (f'\t eval "$(register-python-argcomplete {cmd})"')
+    _printer("Done! ", 36)
 
 
 class PostInstallCommand(install):
