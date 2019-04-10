@@ -1,4 +1,11 @@
 language: python
+
+services:
+  - docker
+
+notifications:
+  email: change
+
 python:
     - "3.6"
 install:
