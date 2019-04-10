@@ -42,6 +42,7 @@ LICENSE = "MIT"
 LONG_DESCRIPTION = long_description
 NAME = "medium-speech"
 REQUIRED = pip_req
+TEST_REQ = []
 REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
 SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
@@ -132,6 +133,7 @@ setup(
     url=URL,
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     install_requires=REQUIRED,
+    test_require=TEST_REQ,
     extras_require=EXTRAS,
     include_package_data=True,
     license=LICENSE,
