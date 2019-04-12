@@ -185,12 +185,18 @@ class MarkdownToSpeech(LoggingClass):
             with suppress(FileNotFoundError):
                 mp3_file.unlink()
 
-    def text_to_speech(self):
-        """Generate speech from text using Google TTS API"""
+    def text_to_speech(self, cleanup=False):
+        """Generate speech from text using Google TTS API
+
+        Args:
+            cleanup (bool, False): Delete MP3 files after playing.
+
+        """
         text_from_markdown = self.markdown_to_text()
         splitted_words = self.splits_words(text_from_markdown)
         self.logger.info("Generate speech from text using Google TTS API")
-        self.clean_up_files()
+        if cleanup:
+            self.clean_up_files()
         for words in splitted_words:
             for count, line in enumerate(words, 1):
                 if line:
@@ -200,30 +206,43 @@ class MarkdownToSpeech(LoggingClass):
                         tts.save(f"{self.tmp_dir}/file_{str(count).zfill(2)}.mp3")
         self.logger.info("Done: Generating speech from text using Google TTS API")
 
-    def play_it(self, play_with="mpg123"):
+    def play_it(self, play_with="cvlc", speed=0, cleanup=False):
         """Play generated TTS as mp3 files
 
         Args:
-            play_with (str, "mph123"): Unix/Linux program to play mp3 with!
+            play_with (str, "cvlc"): Unix/Linux program to play mp3 with!
+            speed (int, 0): Play every n'th frame only ie Player speed.
+            cleanup (bool, False): Delete MP3 files after playing.
+
         """
-        FNULL = open(subprocess.os.devnull, "wb")
-        play_with = self.which(play_with)
         if not play_with:
             msg = (
-                "Ensure that mpg123 is installed in your system\n"
-                "Run 'sudo apt install mpg123'"
+                "Ensure that mpg123/vlc is installed in your system\n"
+                "Run 'sudo apt install --install-recommends mpg123' or\n"
+                "Run 'sudo apt install --install-recommends vlc' "
             )
             raise RuntimeError(msg)
+
+        FNULL = open(subprocess.os.devnull, "wb")
         tmp_dir = Path(self.tmp_dir)
         mp3_files = tmp_dir.glob(f"*.mp3")
+        play_with = self.which(play_with)
+        if "cvlc":
+            play_cmd = f"{play_with} --play-and-exit --no-loop --rate {speed}"
+        elif "mpg123":
+            play_cmd = f"{play_with} -d {speed}"
+        else:
+            play_cmd = play_with
+
         self.logger.info("Playing generated TTS data with %s", play_with)
         for mp3_file in sorted(mp3_files):
             if mp3_file.is_file():
-                self.logger.debug("Playing %s", mp3_file)
+                self.logger.info("Playing %s", mp3_file)
                 subprocess.call(
-                    f"{play_with} {mp3_file}",
+                    f"{play_cmd} {mp3_file}",
                     shell=True,
                     stdout=FNULL,
                     stderr=subprocess.STDOUT,
                 )
-        self.clean_up_files()
+        if cleanup:
+            self.clean_up_files()
