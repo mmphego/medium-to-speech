@@ -12,12 +12,11 @@ from setuptools.command.install import install
 here = os.path.abspath(os.path.dirname(__file__))
 
 # Get the long description from the README file
-with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
-    long_description = f.read()
-
-# Get the pip requirements from the pip-requirements file
-with open(os.path.join(here, "pip-requirements.txt"), encoding="utf-8") as _f:
-    pip_req = [pkg.strip() for pkg in _f.readlines()]
+readme_files = ["README.md"]
+for readme in readme_files:
+    if os.path.exists(os.path.abspath(readme)):
+        with open(os.path.join(here, readme), encoding="utf-8") as f:
+            long_description = f.read()
 
 scripts = []
 for dirname, dirnames, filenames in os.walk("scripts"):
@@ -41,8 +40,12 @@ KEYWORDS = " medium markdown docker-py text-to-speech"
 LICENSE = "MIT"
 LONG_DESCRIPTION = long_description
 NAME = "medium-speech"
-REQUIRED = pip_req
-TEST_REQ = []
+
+# Define all install and test requirements
+REQUIRED = ["argcomplete", "coloredlogs", "docker[tls]", "gTTS", "Markdown"]
+TEST_REQ = ["coverage", "flake8", "mock", "nose", "pytest"]
+SETUP_REQ = ["nose"]
+
 REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
 SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
@@ -62,19 +65,20 @@ else:
 
 
 def _printer(msg, hashx=28):
-    print ("\n")
-    print ("#"*80)
-    print ("#"*hashx, msg, "#"*hashx)
-    print ("#"*80)
-    print ( "\n")
+    print("\n")
+    print("#" * 80)
+    print("#" * hashx, msg, "#" * hashx)
+    print("#" * 80)
+    print("\n")
+
 
 def _post_install():
-    cmd = "".join(SCRIPTS).split('/')[-1]
+    cmd = "".join(SCRIPTS).split("/")[-1]
     _printer("Installation Complete!")
-    print (f"If you would like tab-completion on {cmd}")
-    print ("Run the following commands in your terminal:\n")
-    print ("\t activate-global-python-argcomplete --user")
-    print (f'\t eval "$(register-python-argcomplete {cmd})"')
+    print(f"If you would like tab-completion on {cmd}")
+    print("Run the following commands in your terminal:\n")
+    print("\t activate-global-python-argcomplete --user")
+    print(f'\t eval "$(register-python-argcomplete {cmd})"')
     _printer("Done! ", 36)
 
 
@@ -132,6 +136,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    setup_requires=SETUP_REQ,
     install_requires=REQUIRED,
     test_require=TEST_REQ,
     extras_require=EXTRAS,
@@ -145,8 +150,6 @@ setup(
         "Source": SOURCE,
         "Say Thanks!": f"https://saythanks.io/to/{GHUSERNAME}",
     },
-    cmdclass={
-        "upload": UploadCommand,
-        'install': PostInstallCommand
-    },
+    cmdclass={"upload": UploadCommand, "install": PostInstallCommand},
+    test_suite="nose.collector"
 )
