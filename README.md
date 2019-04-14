@@ -21,7 +21,7 @@ sudo apt install -y docker-ce mpg123 python3.6 python3.6-dev vlc
 
 To install run:
 ```shell
-pip3 install -U --pre .
+python3 -m pip install -U medium-speech
 ```
 
 ## Usage
