@@ -112,9 +112,15 @@ class UploadCommand(Command):
         except OSError:
             pass
 
+        try:
+            import twine
+        except ImportError:
+            errmsg = ("\n'Twine' is not installed.\n\nRun: \n\tpip install twine")
+            self.status(errmsg)
+            raise SystemExit(1)
+
         self.status("Building Source and Wheel (universal) distribution...")
         os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
-
         self.status("Uploading the package to PyPI via Twine...")
         os.system("twine upload dist/*")
 
