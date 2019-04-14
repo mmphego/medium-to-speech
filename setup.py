@@ -150,5 +150,5 @@ setup(
         "Say Thanks!": f"https://saythanks.io/to/{GHUSERNAME}",
     },
     cmdclass={"upload": UploadCommand, "install": PostInstallCommand},
-    test_suite="nose.collector"
+    test_suite="tests"
 )
