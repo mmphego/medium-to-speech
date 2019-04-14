@@ -7,7 +7,7 @@
 
 ## Medium posts to Speech.
 
-A Python library for lazy people (like myself), who never finds time to read daily [Medium](http://medium.com/) posts and prefer to listen to them instead. It convert [medium](http://medium.com/) post to markdown using a [Docker container/image](https://hub.docker.com/r/mmphego/mediumexporter) then uses [gTTs](https://github.com/pndurette/gTTS)  to interface with Google Translate's text-to-speech API which converts text to spoken `MP3` data, thereafter plays the generated `mp3` files with [`cvlc`](https://www.videolan.org/vlc/) assuming it is installed.
+A Python library for lazy people (like myself), who never finds time to read daily [Medium](http://medium.com/) posts and prefer to listen to them instead. It convert [medium](http://medium.com/) post to markdown using a [Docker container/image](https://hub.docker.com/r/mmphego/mediumexporter) then uses [gTTs](https://github.com/pndurette/gTTS)  to interface with Google Translate's text-to-speech API which converts text to spoken `MP3` files, thereafter plays the generated `mp3` files with [`cvlc`](https://www.videolan.org/vlc/) assuming it is installed.
 
 ## Apt Requirements
 
