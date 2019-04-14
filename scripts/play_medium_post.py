@@ -4,7 +4,7 @@ import argparse
 
 import argcomplete
 
-from medium_speech import MarkdownToSpeech
+from medium_speech import MediumToSpeech
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--file", dest="markdown_file", help="Specify a Markdown file.")
     argcomplete.autocomplete(parser)
     args = vars(parser.parse_args())
-    medium_to_speech = MarkdownToSpeech(
+    medium_to_speech = MediumToSpeech(
         medium_url=args.get("medium_url"),
         filename=args.get("markdown_file"),
         log_level=args.get("log_level", "INFO"),

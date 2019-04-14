@@ -12,6 +12,8 @@ from pathlib import Path
 
 import coloredlogs
 import docker
+import requests
+from docker.errors import ImageNotFound
 from gtts import gTTS
 from markdown import Markdown
 
@@ -19,29 +21,65 @@ from markdown import Markdown
 class LoggingClass:
     @property
     def logger(self):
-        log_format = ("%(asctime)s - %(name)s - %(levelname)s - %(module)s - "
-                      "%(pathname)s : %(lineno)d - %(message)s")
+        log_format = (
+            "%(asctime)s - %(name)s - %(levelname)s - %(module)s - "
+            "%(pathname)s : %(lineno)d - %(message)s"
+        )
         name = ".".join([os.path.basename(sys.argv[0]), self.__class__.__name__])
         logging.basicConfig(format=log_format)
         return logging.getLogger(name)
 
 
-class MarkdownToSpeech(LoggingClass):
+class MediumToSpeech(LoggingClass):
     def __init__(
         self,
         medium_url=None,
         filename=None,
-        docker_container="mmphego/mediumexporter",
+        docker_image="mmphego/mediumexporter",
         tmp_dir="/tmp",
         log_level="INFO",
     ):
 
         self.medium_url = medium_url
         self.filename = filename
-        self.docker_container = docker_container
+        self.docker_image = docker_image
         self.tmp_dir = tmp_dir
         self.logger.setLevel(log_level.upper())
         coloredlogs.install(level=log_level.upper())
+        self.pull_images()
+
+    @staticmethod
+    def check_url_exist(url):
+        _request = requests.get(url)
+        return bool(_request.status_code == 200)
+
+    def pull_images(self, force_pull=False):
+        if force_pull:
+            self._client.images.pull(self.docker_image)
+
+        try:
+            self._client = docker.from_env()
+            self._client.images.get(self.docker_image)
+        except ImageNotFound:
+            self.logger.debug(
+                "Pulling Docker image (%s) from Docker Hub.", repr(self.docker_image)
+            )
+            try:
+                self._client.images.pull(self.docker_image)
+                self.logger.debug(
+                    "Successfully downloaded/pulled %s image.", repr(self.docker_image)
+                )
+            except ImageNotFound:
+                raise SystemExit(
+                    "Failed to pull the Docker image %s from hub.docker.com"
+                    % repr(self.docker_image)
+                )
+
+        finally:
+            self.logger.debug(
+                "Successfully found %s Docker image",
+                self._client.images.get(self.docker_image).__repr__(),
+            )
 
     def read_from_medium(self, runonce=True, save_to_file=False):
         """
@@ -57,12 +95,16 @@ class MarkdownToSpeech(LoggingClass):
             )
             raise RuntimeError(msg)
 
-        if self.medium_url:
+        if self.medium_url and self.check_url_exist:
+            restart_policy = {"Name": "on-failure", "MaximumRetryCount": 5}
             try:
-                self.logger.debug("Running docker container '%s'", self.docker_container)
-                client = docker.from_env()
-                data = client.containers.run(
-                    self.docker_container, self.medium_url, remove=runonce
+                self.logger.debug("Running docker container '%s'", self.docker_image)
+                data = self._client.containers.run(
+                    image=self.docker_image,
+                    command=self.medium_url,
+                    # auto_remove=runonce,
+                    remove=runonce,
+                    restart_policy=restart_policy,
                 )
             except Exception as _err:
                 raise RuntimeError(f"{_err}: Failed to retrieve Medium post.")
@@ -136,7 +178,7 @@ class MarkdownToSpeech(LoggingClass):
             return text
 
     def splits_words(self, words=None, char_length=99):
-        """Split list of words to n-characters
+        """Split list of words to n-characters/chunks
 
         Args:
             words (List, optional): list of words
@@ -152,16 +194,13 @@ class MarkdownToSpeech(LoggingClass):
     I    """
         if isinstance(words, list):
             words = [self.remove_tags(i) for i in words]
-            return [words[n: n + char_length] for n in range(0, len(words), char_length)]
+            return [words[n : n + char_length] for n in range(0, len(words), char_length)]
 
-    def markdown_to_text(self, tab_length=4):
+    def read_markdown(self):
         """
+        Read Markdown from Medium URL or File
 
-        Args:
-            tab_length (int, optional): Description
-
-        Returns:
-
+        Returns: md_text (str): Markdown text in the form of bytes
         """
         if self.medium_url:
             md_text = self.read_from_medium()
@@ -169,6 +208,21 @@ class MarkdownToSpeech(LoggingClass):
             md_text = self.read_from_file()
         else:
             raise RuntimeError("URL or Filename cannot be None")
+        return md_text
+
+    def markdown_to_text(self, md_text='', tab_length=4):
+        """
+
+        Args:
+            md_text (bytes, str): Markdown text in the form of bytes
+            tab_length (int, optional): Description
+
+        Returns:
+            plain_text (list): Converted Markdown into plain text
+        """
+        if not md_text:
+            md_text = self.read_markdown()
+
         text = self.bytes_to_str(md_text)
         Markdown.output_formats["plain"] = self.unmark_element
         md = Markdown(output_format="plain")

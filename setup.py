@@ -43,8 +43,6 @@ NAME = "medium-speech"
 
 # Define all install and test requirements
 REQUIRED = ["argcomplete", "coloredlogs", "docker[tls]", "gTTS", "Markdown"]
-TEST_REQ = ["coverage", "flake8", "mock", "nose", "pytest"]
-SETUP_REQ = ["nose"]
 
 REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
@@ -52,7 +50,8 @@ SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
 URL = f"https://github.com/{GHUSERNAME}/medium-to-speech"
 VERSION = None
 
-EXTRAS = {}
+EXTRAS = {'testing': ["coverage", "flake8", "mock", "nose", "pytest"]}
+
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
@@ -136,9 +135,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    setup_requires=SETUP_REQ,
     install_requires=REQUIRED,
-    test_require=TEST_REQ,
     extras_require=EXTRAS,
     include_package_data=True,
     license=LICENSE,
