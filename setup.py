@@ -47,7 +47,7 @@ SETUP_REQ = ["nose"]
 
 REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
-SOURCE = f"https://github.com/{GHUSERNAME}/markdown-speech/"
+SOURCE = f"https://github.com/{GHUSERNAME}/markdown-to-speech/"
 URL = f"https://github.com/{GHUSERNAME}/medium-to-speech"
 VERSION = None
 
@@ -121,6 +121,7 @@ class UploadCommand(Command):
 
         self.status("Building Source and Wheel (universal) distribution...")
         os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
+
         self.status("Uploading the package to PyPI via Twine...")
         os.system("twine upload dist/*")
 
@@ -154,6 +155,7 @@ setup(
         "Bug Reports": SOURCE + "/issues",
         "Source": SOURCE,
         "Say Thanks!": f"https://saythanks.io/to/{GHUSERNAME}",
+        "AboutMe": "https://blog.mphomphego.co.za/aboutme",
     },
     cmdclass={"upload": UploadCommand, "install": PostInstallCommand},
     test_suite="tests"
