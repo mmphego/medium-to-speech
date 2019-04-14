@@ -4,6 +4,7 @@ import unittest
 import warnings
 
 from gtts.tts import gTTS, gTTSError
+
 from medium_speech import MediumToSpeech
 
 from . import utils

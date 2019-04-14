@@ -210,7 +210,7 @@ class MediumToSpeech(LoggingClass):
             raise RuntimeError("URL or Filename cannot be None")
         return md_text
 
-    def markdown_to_text(self, md_text='', tab_length=4):
+    def markdown_to_text(self, md_text="", tab_length=4):
         """
 
         Args:
