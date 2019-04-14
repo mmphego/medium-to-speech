@@ -1,5 +1,0 @@
-argcomplete
-coloredlogs
-docker[tls]
-gTTS
-Markdown

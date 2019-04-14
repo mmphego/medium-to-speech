@@ -1,1 +1,1 @@
-from .MarkdownToSpeech import MarkdownToSpeech
+from .MediumToSpeech import MediumToSpeech

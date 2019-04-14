@@ -1,8 +1,16 @@
 language: python
+
+services:
+  - docker
+
+notifications:
+  email: change
+
 python:
     - "3.6"
+
 install:
-    - pip install flake8
-    - pip install .
+    - pip install tox==3.8.1
+
 script:
-  - flake8 --max-line-length=90 medium_speech
+  - tox -e py36 -e flake8
