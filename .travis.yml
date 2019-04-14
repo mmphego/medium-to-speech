@@ -8,6 +8,8 @@ notifications:
 
 python:
     - "3.6"
+
+install:
     - pip install tox==3.8.1
 
 script:
