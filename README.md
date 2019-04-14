@@ -2,6 +2,8 @@
 # medium-to-speech
 
 [![Build Status](https://travis-ci.com/mmphego/medium-to-speech.svg?branch=master)](https://travis-ci.com/mmphego/medium-to-speech)
+![Version 0.1.2](https://img.shields.io/badge/Version-0.1.2-brightgreen.svg)
+[![Python](https://img.shields.io/badge/Python-3.6%2B-red.svg)](https://www.python.org/downloads/)
 ![GitHub](https://img.shields.io/github/license/mmphego/medium-to-speech.svg) [
 ![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/mmphego)
 
