@@ -43,6 +43,7 @@ NAME = "medium-speech"
 
 # Define all install and test requirements
 REQUIRED = ["argcomplete", "coloredlogs", "docker[tls]", "gTTS", "Markdown"]
+SETUP_REQ = ["nose"]
 
 REQUIRES_PYTHON = "~=3.6"
 SCRIPTS = scripts
@@ -135,6 +136,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    setup_requires=SETUP_REQ,
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
