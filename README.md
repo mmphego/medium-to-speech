@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.com/mmphego/medium-to-speech.svg?branch=master)](https://travis-ci.com/mmphego/medium-to-speech)
 [![Python](https://img.shields.io/badge/Python-3.6%2B-red.svg)](https://www.python.org/downloads/)
-![GitHub](https://img.shields.io/github/license/mmphego/medium-to-speech.svg) [
+![GitHub](https://img.shields.io/github/license/mmphego/medium-to-speech.svg) 
 ![PyPI](https://img.shields.io/pypi/v/medium-speech.svg?color=green&label=pypi%20release)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/medium-speech.svg?label=PyPi%20Downloads)
 ![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/mmphego)
