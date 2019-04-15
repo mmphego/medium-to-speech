@@ -6,7 +6,7 @@
 ![GitHub](https://img.shields.io/github/license/mmphego/medium-to-speech.svg) 
 ![PyPI](https://img.shields.io/pypi/v/medium-speech.svg?color=green&label=pypi%20release)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/medium-speech.svg?label=PyPi%20Downloads)
-![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/mmphego)
+[![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/mmphego)
 
 ## Medium posts to Speech.
 
@@ -63,7 +63,7 @@ play_medium_post.py -ps 1 --file README.md
 
 ## Oh, Thanks!
 
-By the way... thank you! And if you'd like to [say thanks](https://saythanks.io/to/mmphego)... :)
+By the way... Click if you'd like to [say thanks](https://saythanks.io/to/mmphego)... :) else *Star* it.
 
 ✨🍰✨
 
