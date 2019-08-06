@@ -1,3 +1,6 @@
+dist: xenial
+cache: pip
+
 language: python
 
 services:
@@ -7,10 +10,10 @@ notifications:
   email: change
 
 python:
-    - "3.6"
+    - 3.6
 
 install:
     - pip install tox==3.8.1
 
 script:
-  - tox -e py36 -e flake8
+  - tox
