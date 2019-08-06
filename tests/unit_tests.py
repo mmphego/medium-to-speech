@@ -66,8 +66,7 @@ class test_MediumtoSpeech(unittest.TestCase):
         self.medium_speech = MediumToSpeech()
         self.medium_speech.medium_url = (
             "https://medium.com/@mmphego/"
-            + "how-i-managed-to-harness-imposter-syndrome-391fdb754820"
-        )
+            + "how-i-managed-to-harness-imposter-syndrome-391fdb754820")
         self.medium_speech.docker_image = "mmphego/mediumexporter"
 
     def test_remove_HTML_tags(self):

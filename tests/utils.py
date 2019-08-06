@@ -33,6 +33,6 @@ def delete_folder(pth):
 
 def create_tmp_dir(path):
     tmp_path = None
-    with suppress(FileExistsError) as err:
+    with suppress(FileExistsError):
         tmp_path = pathlib.Path(path).mkdir()
     return tmp_path if tmp_path else pathlib.Path(path)
